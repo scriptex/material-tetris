@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" manifest="tetris.appcache">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="x-ua-compatible" content="ie=edge" />
+		<meta name="viewport" content="width=480, initial-scale=1" />
+
+		<title>Tetris</title>
+
+		<link rel="apple-touch-icon-precomposed" sizes="57x57" href="assets/apple-touch-icon-57x57.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/apple-touch-icon-114x114.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/apple-touch-icon-72x72.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/apple-touch-icon-144x144.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="60x60" href="assets/apple-touch-icon-60x60.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/apple-touch-icon-120x120.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="76x76" href="assets/apple-touch-icon-76x76.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="152x152" href="assets/apple-touch-icon-152x152.png" />
+		<link rel="icon" type="image/png" href="assets/favicon-196x196.png" sizes="196x196" />
+		<link rel="icon" type="image/png" href="assets/favicon-96x96.png" sizes="96x96" />
+		<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+		<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+		<link rel="icon" type="image/png" href="assets/favicon-128.png" sizes="128x128" />
+		<meta name="application-name" content="Tetris" />
+		<meta name="msapplication-TileColor" content="#37474f" />
+		<meta name="msapplication-TileImage" content="assets/mstile-144x144.png" />
+		<meta name="msapplication-square70x70logo" content="assets/mstile-70x70.png" />
+		<meta name="msapplication-square150x150logo" content="assets/mstile-150x150.png" />
+		<meta name="msapplication-wide310x150logo" content="assets/mstile-310x150.png" />
+		<meta name="msapplication-square310x310logo" content="assets/mstile-310x310.png" />
+		<meta name="theme-color" content="#37474f" />
+
+		<link rel="manifest" href="/manifest.json" />
+
+		<style>
+			html,
+			body {
+				height: 100%;
+				min-width: 480px;
+				min-height: 700px;
+				overflow: hidden;
+			}
+
+			body {
+				font-family: monospace;
+				text-transform: lowercase;
+				display: flex;
+				flex-flow: row nowrap;
+				align-items: center;
+				justify-content: center;
+				padding: 0;
+				margin: 0;
+				background: #333;
+			}
+
+			button {
+				font-family: inherit;
+				font-size: 1rem;
+				line-height: 1.25;
+				color: #0288d1;
+				text-transform: lowercase;
+				min-width: 6.25rem;
+				display: block;
+				padding: 0.5rem 0;
+				border: 1px solid;
+				margin: 1rem 0;
+				background-color: #fff;
+				border-radius: 0.25rem;
+				box-shadow: none;
+				appearance: none;
+				cursor: pointer;
+			}
+
+			#tetris {
+				display: flex;
+				flex-flow: row nowrap;
+				position: relative;
+				background: #555;
+			}
+
+			#scene {
+				height: 100%;
+				background: #2f2f2f;
+			}
+
+			#gameOver {
+				color: #ffe100;
+				text-align: center;
+				display: none;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				background: rgba(0, 0, 0, 0.75);
+				z-index: 10;
+			}
+
+			#gameOver button {
+				margin: 1rem auto;
+			}
+
+			#gameOver h1 {
+				margin-top: 50%;
+			}
+
+			#gameOver h3 {
+				color: #0288d1;
+			}
+
+			#side {
+				text-align: center;
+				display: flex;
+				flex-flow: column wrap;
+				align-items: center;
+				justify-content: space-between;
+				background-color: #37474f;
+			}
+
+			#info {
+				width: 100%;
+			}
+
+			#preview {
+				width: 80px;
+				height: 80px;
+				background: #37474f;
+				margin: 10px auto;
+			}
+
+			#levelInfo {
+				color: #fff;
+				font-size: 1.25rem;
+				margin: 0.5rem 0;
+			}
+
+			#level {
+				color: #0288d1;
+				font-size: 2rem;
+				display: block;
+			}
+
+			#scoreInfo {
+				color: #fff;
+				font-size: 1.25rem;
+				margin: 0;
+			}
+
+			#score {
+				color: #0288d1;
+				display: block;
+			}
+
+			#rewardInfo {
+				color: yellow;
+				font-weight: bold;
+			}
+
+			.invisible {
+				visibility: hidden;
+			}
+
+			.animated {
+				animation-duration: 1.5s;
+				animation-fill-mode: both;
+			}
+
+			@-webkit-keyframes fadeOutUp {
+				0% {
+					opacity: 1;
+				}
+
+				100% {
+					opacity: 0;
+					transform: translate3d(0, -100%, 0);
+				}
+			}
+
+			@keyframes fadeOutUp {
+				0% {
+					opacity: 1;
+				}
+
+				100% {
+					opacity: 0;
+					transform: translate3d(0, -100%, 0);
+				}
+			}
+
+			.fadeOutUp {
+				animation-name: fadeOutUp;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="tetris">
+			<canvas id="scene"></canvas>
+
+			<div id="gameOver">
+				<h1>Game Over !</h1>
+
+				<h3>Score: <span id="finalScore">0</span></h3>
+
+				<h2><button id="restart">Restart</button></h2>
+			</div>
+
+			<div id="side">
+				<div id="info">
+					<h1 id="levelInfo">Level:<span id="level">1</span></h1>
+
+					<h2 id="scoreInfo">Score:<span id="score">0</span></h2>
+
+					<div id="rewardInfo" class="invisible">+<span id="reward">0</span></div>
+				</div>
+
+				<canvas id="preview"></canvas>
+
+				<div id="controls">
+					<button id="start">Start</button>
+
+					<button id="pause">Pause</button>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script type="module" src="dist/index.js"></script>
+</html>

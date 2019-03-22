@@ -1,0 +1,12 @@
+export const COLORS: string[] = ['#b71c1c', '#4a148c', '#0d47a1', '#006064', '#1b5e20', '#827717', '#e65100'];
+export const ASIDE_WIDTH: number = 120;
+export const COLUMN_COUNT: number = 10;
+export const ROW_COUNT: number = 20;
+export const PREVIEW_COUNT: number = 6;
+export const SCENE_BG_START: string = '#eeeeee';
+export const SCENE_BG_END: string = '#bdbdbd';
+export const PREVIEW_BG: string = '#37474f';
+export const GRID_LINE_COLOR: string = 'rgba(255,255,255,0.2)';
+export const BOX_BORDER_COLOR: string = 'rgba(255,255,255,0.5)';
+export const DEFAULT_INTERVAL: number = 600;
+export const LEVEL_INTERVAL: number = 120 * 1000;
