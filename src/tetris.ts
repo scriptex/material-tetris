@@ -2,7 +2,7 @@ import * as consts from './consts.js';
 import * as shapes from './shapes.js';
 import * as matrix from './matrix.js';
 import TouchSweep from './touchswipe.js';
-import { tetrisCanvas } from './canvas.js';
+import TetrisCanvas from './canvas.js';
 import { tetrisView, scene, preview, btnRestart } from './views.js';
 
 export const defaults: shapes.IndexedList<number> = {
@@ -10,7 +10,7 @@ export const defaults: shapes.IndexedList<number> = {
 	maxWidth: 600
 };
 
-export class Tetris {
+export default class Tetris {
 	public touchSwipeInstance: TouchSweep;
 
 	private id: string;
@@ -25,6 +25,7 @@ export class Tetris {
 	private currentTime: number;
 	private prevTime: number;
 	private levelTime: number;
+	private tetrisCanvas: TetrisCanvas;
 	private preparedShape: shapes.Shape;
 
 	constructor(id: string) {
@@ -53,7 +54,7 @@ export class Tetris {
 		this.interval = consts.DEFAULT_INTERVAL;
 
 		tetrisView.init(this.id, config.maxWidth, config.maxHeight);
-		tetrisCanvas.init(scene, preview);
+		this.tetrisCanvas = new TetrisCanvas(scene, preview);
 
 		this.matrix = matrix.init(consts.ROW_COUNT, consts.COLUMN_COUNT);
 
@@ -164,13 +165,13 @@ export class Tetris {
 
 		this.draw();
 
-		tetrisCanvas.drawPreviewShape(this.preparedShape);
+		this.tetrisCanvas.drawPreviewShape(this.preparedShape);
 	};
 
 	private draw = (): void => {
-		tetrisCanvas.drawScene();
-		tetrisCanvas.drawShape(this.shape);
-		tetrisCanvas.drawMatrix(this.matrix);
+		this.tetrisCanvas.drawScene();
+		this.tetrisCanvas.drawShape(this.shape);
+		this.tetrisCanvas.drawMatrix(this.matrix);
 	};
 
 	private refresh = (): void => {

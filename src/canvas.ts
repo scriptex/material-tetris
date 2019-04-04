@@ -2,74 +2,15 @@ import { Row } from './matrix.js';
 import { Point, Shape } from './shapes.js';
 import * as constants from './consts.js';
 
-export const drawLine = (ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color: string): void => {
-	ctx.beginPath();
+export default class TetrisCanvas {
+	private scene: HTMLCanvasElement;
+	private preview: HTMLCanvasElement;
+	private sceneContext: CanvasRenderingContext2D;
+	private previewContext: CanvasRenderingContext2D;
+	private gridSize: number;
+	private previewGridSize: number;
 
-	ctx.moveTo(p1.x, p1.y);
-	ctx.lineTo(p2.x, p2.y);
-
-	ctx.lineWidth = 1;
-	ctx.strokeStyle = color;
-
-	ctx.stroke();
-	ctx.closePath();
-};
-
-export const drawGrids = (
-	canvas: HTMLCanvasElement,
-	size: number,
-	cols: number,
-	rows: number,
-	color1: string,
-	color2: string
-): void => {
-	const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-	const width: number = canvas.width;
-	const height: number = canvas.height;
-
-	ctx.rect(0, 0, width, height);
-
-	const gradient: CanvasGradient = ctx.createLinearGradient(0, 0, 0, height);
-
-	gradient.addColorStop(0, color1);
-	gradient.addColorStop(1, color2);
-
-	ctx.fillStyle = gradient;
-	ctx.fill();
-
-	for (let i: number = 1; i < cols; i++) {
-		const x = size * i + 0.5;
-
-		drawLine(ctx, { x, y: 0 }, { x, y: height }, constants.GRID_LINE_COLOR);
-	}
-
-	for (let i: number = 1; i < rows; i++) {
-		const y = size * i + 0.5;
-
-		drawLine(ctx, { x: 0, y }, { x: width, y }, constants.GRID_LINE_COLOR);
-	}
-};
-
-export const drawPoint = (ctx: CanvasRenderingContext2D, color: string, x: number, y: number, size: number): void => {
-	if (y < 0) {
-		return;
-	}
-
-	ctx.beginPath();
-	ctx.rect(x, y, size, size);
-
-	ctx.fillStyle = color;
-	ctx.fill();
-
-	ctx.strokeStyle = constants.BOX_BORDER_COLOR;
-	ctx.lineWidth = 1;
-
-	ctx.stroke();
-	ctx.closePath();
-};
-
-export const tetrisCanvas = {
-	init: function(scene: HTMLCanvasElement, preview: HTMLCanvasElement): void {
+	constructor(scene: HTMLCanvasElement, preview: HTMLCanvasElement) {
 		this.scene = scene;
 		this.preview = preview;
 		this.sceneContext = scene.getContext('2d');
@@ -78,17 +19,12 @@ export const tetrisCanvas = {
 		this.previewGridSize = preview.width / constants.PREVIEW_COUNT;
 
 		this.drawScene();
-	},
-	clearScene: function(): void {
-		this.sceneContext.clearRect(0, 0, this.scene.width, this.scene.height);
-	},
-	clearPreview: function(): void {
-		this.previewContext.clearRect(0, 0, this.preview.width, this.preview.height);
-	},
-	drawScene: function(): void {
+	}
+
+	public drawScene = (): void => {
 		this.clearScene();
 
-		drawGrids(
+		this.drawGrids(
 			this.scene,
 			this.gridSize,
 			constants.COLUMN_COUNT,
@@ -96,8 +32,20 @@ export const tetrisCanvas = {
 			constants.SCENE_BG_START,
 			constants.SCENE_BG_END
 		);
-	},
-	drawMatrix: function(matrix: Row[]): void {
+	};
+
+	public drawPreview = (): void => {
+		this.drawGrids(
+			this.preview,
+			this.previewGridSize,
+			constants.PREVIEW_COUNT,
+			constants.PREVIEW_COUNT,
+			constants.PREVIEW_BG,
+			constants.PREVIEW_BG
+		);
+	};
+
+	public drawMatrix = (matrix: Row[]): void => {
 		for (let i: number = 0; i < matrix.length; i++) {
 			const row: Row = matrix[i];
 
@@ -106,21 +54,12 @@ export const tetrisCanvas = {
 					continue;
 				}
 
-				drawPoint(this.sceneContext, row[j] as any, j * this.gridSize, i * this.gridSize, this.gridSize);
+				this.drawPoint(this.sceneContext, row[j] as any, j * this.gridSize, i * this.gridSize, this.gridSize);
 			}
 		}
-	},
-	drawPreview: function(): void {
-		drawGrids(
-			this.preview,
-			this.previewGridSize,
-			constants.PREVIEW_COUNT,
-			constants.PREVIEW_COUNT,
-			constants.PREVIEW_BG,
-			constants.PREVIEW_BG
-		);
-	},
-	drawShape: function(shape: Shape): void {
+	};
+
+	public drawShape = (shape: Shape): void => {
 		if (!shape) {
 			return;
 		}
@@ -139,11 +78,12 @@ export const tetrisCanvas = {
 				const x: number = size * (shape.x + j);
 				const y: number = size * (shape.y + i);
 
-				drawPoint(this.sceneContext, shape.color, x, y, size);
+				this.drawPoint(this.sceneContext, shape.color, x, y, size);
 			}
 		}
-	},
-	drawPreviewShape: function(shape: Shape): void {
+	};
+
+	public drawPreviewShape = (shape: Shape): void => {
 		if (!shape) {
 			return;
 		}
@@ -166,8 +106,82 @@ export const tetrisCanvas = {
 				const x: number = startX + size * j;
 				const y: number = startY + size * i;
 
-				drawPoint(this.previewContext, shape.color, x, y, size);
+				this.drawPoint(this.previewContext, shape.color, x, y, size);
 			}
 		}
-	}
-};
+	};
+
+	private clearScene = (): void => {
+		this.sceneContext.clearRect(0, 0, this.scene.width, this.scene.height);
+	};
+
+	private clearPreview = (): void => {
+		this.previewContext.clearRect(0, 0, this.preview.width, this.preview.height);
+	};
+
+	private drawLine = (ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color: string): void => {
+		ctx.beginPath();
+
+		ctx.moveTo(p1.x, p1.y);
+		ctx.lineTo(p2.x, p2.y);
+
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = color;
+
+		ctx.stroke();
+		ctx.closePath();
+	};
+
+	private drawGrids = (
+		canvas: HTMLCanvasElement,
+		size: number,
+		cols: number,
+		rows: number,
+		color1: string,
+		color2: string
+	): void => {
+		const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+		const width: number = canvas.width;
+		const height: number = canvas.height;
+
+		ctx.rect(0, 0, width, height);
+
+		const gradient: CanvasGradient = ctx.createLinearGradient(0, 0, 0, height);
+
+		gradient.addColorStop(0, color1);
+		gradient.addColorStop(1, color2);
+
+		ctx.fillStyle = gradient;
+		ctx.fill();
+
+		for (let i: number = 1; i < cols; i++) {
+			const x = size * i + 0.5;
+
+			this.drawLine(ctx, { x, y: 0 }, { x, y: height }, constants.GRID_LINE_COLOR);
+		}
+
+		for (let i: number = 1; i < rows; i++) {
+			const y = size * i + 0.5;
+
+			this.drawLine(ctx, { x: 0, y }, { x: width, y }, constants.GRID_LINE_COLOR);
+		}
+	};
+
+	private drawPoint = (ctx: CanvasRenderingContext2D, color: string, x: number, y: number, size: number): void => {
+		if (y < 0) {
+			return;
+		}
+
+		ctx.beginPath();
+		ctx.rect(x, y, size, size);
+
+		ctx.fillStyle = color;
+		ctx.fill();
+
+		ctx.strokeStyle = constants.BOX_BORDER_COLOR;
+		ctx.lineWidth = 1;
+
+		ctx.stroke();
+		ctx.closePath();
+	};
+}

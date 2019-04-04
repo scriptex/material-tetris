@@ -1,7 +1,7 @@
 import * as shapes from './shapes.js';
 import TouchSweep from './touchswipe.js';
 export declare const defaults: shapes.IndexedList<number>;
-export declare class Tetris {
+export default class Tetris {
     touchSwipeInstance: TouchSweep;
     private id;
     private level;
@@ -15,6 +15,7 @@ export declare class Tetris {
     private currentTime;
     private prevTime;
     private levelTime;
+    private tetrisCanvas;
     private preparedShape;
     constructor(id: string);
     start: () => void;

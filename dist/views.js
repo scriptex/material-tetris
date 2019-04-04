@@ -43,10 +43,10 @@ const setLayout = (container, maxWidth, maxHeight) => {
 export const tetrisView = {
     init: function (id, maxWidth, maxHeight) {
         this.container = $(id);
-        this.scene = scene;
-        this.preview = preview;
         this.btnRestart = btnRestart;
         setLayout(this.container, maxWidth, maxHeight);
+        this.scene = scene;
+        this.preview = preview;
         this.scene.focus();
         rewardInfo.addEventListener('animationEnd', () => {
             rewardInfo.className = 'invisible';

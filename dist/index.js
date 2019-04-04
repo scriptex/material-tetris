@@ -1,5 +1,5 @@
 import { $ } from './views.js';
-import { Tetris } from './tetris.js';
+import Tetris from './tetris.js';
 const game = new Tetris('tetris');
 const startButton = $('start');
 const pauseButton = $('pause');

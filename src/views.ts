@@ -57,11 +57,12 @@ const setLayout = (container: HTMLElement, maxWidth: number, maxHeight: number):
 export const tetrisView = {
 	init: function(id: string, maxWidth: number, maxHeight: number): void {
 		this.container = $(id);
-		this.scene = scene;
-		this.preview = preview;
 		this.btnRestart = btnRestart;
 
 		setLayout(this.container, maxWidth, maxHeight);
+
+		this.scene = scene;
+		this.preview = preview;
 
 		this.scene.focus();
 
