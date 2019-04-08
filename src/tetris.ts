@@ -1,9 +1,25 @@
 import * as consts from './consts.js';
 import * as shapes from './shapes.js';
 import * as matrix from './matrix.js';
+
+import TetrisView from './views.js';
 import TouchSweep from './touchswipe.js';
 import TetrisCanvas from './canvas.js';
-import { tetrisView, scene, preview, btnRestart } from './views.js';
+
+import { $ } from './utils.js';
+import {
+	scene,
+	side,
+	info,
+	preview,
+	level,
+	score,
+	rewardInfo,
+	reward,
+	gameOver,
+	btnRestart,
+	finalScore
+} from './elements.js';
 
 export const defaults: shapes.IndexedList<number> = {
 	maxHeight: 700,
@@ -13,7 +29,6 @@ export const defaults: shapes.IndexedList<number> = {
 export default class Tetris {
 	public touchSwipeInstance: TouchSweep;
 
-	private id: string;
 	private level: number;
 	private score: number;
 	private shape: shapes.Shape;
@@ -25,11 +40,13 @@ export default class Tetris {
 	private currentTime: number;
 	private prevTime: number;
 	private levelTime: number;
+	private container: HTMLElement;
+	private tetrisView: TetrisView;
 	private tetrisCanvas: TetrisCanvas;
 	private preparedShape: shapes.Shape;
 
 	constructor(id: string) {
-		this.id = id;
+		this.container = $(id);
 		this.init();
 	}
 
@@ -37,12 +54,16 @@ export default class Tetris {
 		this.running = true;
 
 		window.requestAnimationFrame(this.refresh.bind(this));
+
+		this.container.classList.add('is--running');
 	};
 
 	public pause = (): void => {
 		this.running = false;
 		this.currentTime = new Date().getTime();
 		this.prevTime = this.currentTime;
+
+		this.container.classList.remove('is--running');
 	};
 
 	private init = (options: shapes.IndexedList<number> = {}): void => {
@@ -53,7 +74,27 @@ export default class Tetris {
 
 		this.interval = consts.DEFAULT_INTERVAL;
 
-		tetrisView.init(this.id, config.maxWidth, config.maxHeight);
+		this.tetrisView = new TetrisView(
+			{
+				width: config.maxWidth,
+				height: config.maxHeight
+			},
+			{
+				scene,
+				side,
+				info,
+				level,
+				score,
+				reward,
+				preview,
+				gameOver,
+				btnRestart,
+				rewardInfo,
+				finalScore,
+				container: this.container
+			}
+		);
+
 		this.tetrisCanvas = new TetrisCanvas(scene, preview);
 
 		this.matrix = matrix.init(consts.ROW_COUNT, consts.COLUMN_COUNT);
@@ -74,15 +115,19 @@ export default class Tetris {
 		this.levelTime = this.startTime;
 		this.matrix = matrix.clear(this.matrix);
 
-		tetrisView.setLevel(this.level);
-		tetrisView.setScore(this.score);
-		tetrisView.setGameOver(this.isOver);
+		this.tetrisView.setLevel(this.level);
+		this.tetrisView.setScore(this.score);
+		this.tetrisView.setGameOver(this.isOver);
 
 		this.draw();
 	};
 
 	private touchHandler = (): void => {
 		this.touchSwipeInstance = new TouchSweep(scene);
+
+		if (!this.running) {
+			return;
+		}
 
 		const touchEventsMap: shapes.IndexedList<number> = {
 			tap: 32,
@@ -105,7 +150,7 @@ export default class Tetris {
 	};
 
 	private keyboardHandler = (e: KeyboardEvent): void => {
-		if (this.isOver || !this.shape) {
+		if (this.isOver || !this.shape || !this.running) {
 			return;
 		}
 
@@ -206,10 +251,10 @@ export default class Tetris {
 
 		this.isOver = matrix.isOver(this.matrix);
 
-		tetrisView.setGameOver(this.isOver);
+		this.tetrisView.setGameOver(this.isOver);
 
 		if (this.isOver) {
-			tetrisView.setFinalScore(this.score);
+			this.tetrisView.setFinalScore(this.score);
 		}
 	};
 
@@ -227,8 +272,8 @@ export default class Tetris {
 
 		this.score += score + reward;
 
-		tetrisView.setScore(this.score);
-		tetrisView.setReward(reward);
+		this.tetrisView.setScore(this.score);
+		this.tetrisView.setReward(reward);
 	};
 
 	private setLevel = (): void => {
@@ -241,7 +286,7 @@ export default class Tetris {
 		this.level += 1;
 		this.interval = matrix.getInterval(this.level);
 
-		tetrisView.setLevel(this.level);
+		this.tetrisView.setLevel(this.level);
 
 		this.levelTime = currentTime;
 	};

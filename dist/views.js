@@ -1,76 +1,77 @@
 import { ASIDE_WIDTH } from './consts.js';
-export const $ = (id) => document.getElementById(id);
-export const scene = $('scene');
-export const side = $('side');
-export const info = $('info');
-export const preview = $('preview');
-export const level = $('level');
-export const score = $('score');
-export const rewardInfo = $('rewardInfo');
-export const reward = $('reward');
-export const gameOver = $('gameOver');
-export const btnRestart = $('restart');
-export const finalScore = $('finalScore');
-export const getContainerSize = (maxWidth, maxHeight) => {
-    const { clientWidth, clientHeight } = document.documentElement;
-    const size = {};
-    if (clientWidth > clientHeight) {
-        size.height = Math.min(maxHeight, clientHeight);
-        size.width = Math.min(size.height / 2 + ASIDE_WIDTH, maxWidth);
+export default class TetrisView {
+    constructor(size, elements) {
+        this.init = () => {
+            this.scene.focus();
+            this.setLayout(this.container, this.maxWidth, this.maxHeight);
+            this.rewardInfo.addEventListener('animationEnd', () => {
+                this.rewardInfo.className = 'invisible';
+            });
+        };
+        this.setScore = (amount) => {
+            this.score.innerHTML = amount.toString();
+        };
+        this.setFinalScore = (amount) => {
+            this.finalScore.innerHTML = amount.toString();
+        };
+        this.setLevel = (lvl) => {
+            this.level.innerHTML = lvl.toString();
+        };
+        this.setReward = (amount) => {
+            if (amount > 0) {
+                this.reward.innerHTML = amount.toString();
+                this.rewardInfo.className = 'fadeOutUp animated';
+            }
+            else {
+                this.rewardInfo.className = 'invisible';
+            }
+        };
+        this.setGameOver = (isOver) => {
+            this.gameOver.style.display = isOver ? 'block' : 'none';
+        };
+        this.getContainerSize = (maxWidth, maxHeight) => {
+            const { clientWidth, clientHeight } = document.documentElement;
+            const size = {};
+            if (clientWidth > clientHeight) {
+                size.height = Math.min(maxHeight, clientHeight);
+                size.width = Math.min(size.height / 2 + ASIDE_WIDTH, maxWidth);
+            }
+            else {
+                size.width = Math.min(maxWidth, clientWidth);
+                size.height = Math.min(maxHeight, clientHeight);
+            }
+            return size;
+        };
+        this.setLayout = (container, maxWidth, maxHeight) => {
+            const size = this.getContainerSize(maxWidth, maxHeight);
+            const style = container.style;
+            style.width = size.width + 'px';
+            style.height = size.height + 'px';
+            this.scene.height = size.height;
+            this.scene.width = this.scene.height / 2;
+            const sideWidth = size.width - this.scene.width;
+            this.side.style.width = sideWidth + 'px';
+            if (sideWidth < ASIDE_WIDTH) {
+                this.info.style.width = this.side.style.width;
+            }
+            this.preview.width = 80;
+            this.preview.height = 80;
+            this.gameOver.style.width = this.scene.width + 'px';
+        };
+        this.info = elements.info;
+        this.side = elements.side;
+        this.scene = elements.scene;
+        this.score = elements.score;
+        this.level = elements.level;
+        this.reward = elements.reward;
+        this.preview = elements.preview;
+        this.gameOver = elements.gameOver;
+        this.container = elements.container;
+        this.btnRestart = elements.btnRestart;
+        this.rewardInfo = elements.rewardInfo;
+        this.finalScore = elements.finalScore;
+        this.maxWidth = size.width;
+        this.maxHeight = size.height;
+        this.init();
     }
-    else {
-        size.width = Math.min(maxWidth, clientWidth);
-        size.height = Math.min(maxHeight, clientHeight);
-    }
-    return size;
-};
-const setLayout = (container, maxWidth, maxHeight) => {
-    const size = getContainerSize(maxWidth, maxHeight);
-    const style = container.style;
-    style.width = size.width + 'px';
-    style.height = size.height + 'px';
-    scene.height = size.height;
-    scene.width = scene.height / 2;
-    const sideWidth = size.width - scene.width;
-    side.style.width = sideWidth + 'px';
-    if (sideWidth < ASIDE_WIDTH) {
-        info.style.width = side.style.width;
-    }
-    preview.width = 80;
-    preview.height = 80;
-    gameOver.style.width = scene.width + 'px';
-};
-export const tetrisView = {
-    init: function (id, maxWidth, maxHeight) {
-        this.container = $(id);
-        this.btnRestart = btnRestart;
-        setLayout(this.container, maxWidth, maxHeight);
-        this.scene = scene;
-        this.preview = preview;
-        this.scene.focus();
-        rewardInfo.addEventListener('animationEnd', () => {
-            rewardInfo.className = 'invisible';
-        });
-    },
-    setScore: (amount) => {
-        score.innerHTML = amount.toString();
-    },
-    setFinalScore: (amount) => {
-        finalScore.innerHTML = amount.toString();
-    },
-    setLevel: (lvl) => {
-        level.innerHTML = lvl.toString();
-    },
-    setReward: (amount) => {
-        if (amount > 0) {
-            reward.innerHTML = amount.toString();
-            rewardInfo.className = 'fadeOutUp animated';
-        }
-        else {
-            rewardInfo.className = 'invisible';
-        }
-    },
-    setGameOver: (isOver) => {
-        gameOver.style.display = isOver ? 'block' : 'none';
-    }
-};
+}

@@ -9,6 +9,8 @@ const urlsToCache = [
 	'/dist/tetris.js',
 	'/dist/touchswipe.js',
 	'/dist/views.js',
+	'/dist/utils.js',
+	'/dist/elements.js',
 	'/icons/icon-72x72.png',
 	'/icons/icon-96x96.png',
 	'/icons/icon-128x128.png',

@@ -44,3 +44,5 @@ dist/shapes.js
 dist/tetris.js
 dist/touchswipe.js
 dist/views.js
+dist/utils.js
+dist/elements.js
