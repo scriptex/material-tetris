@@ -169,11 +169,11 @@ export default class Tetris {
                 return;
             }
             matrix.removeRows(this.matrix, rows);
-            const score = matrix.getScore(rows);
-            const reward = matrix.getReward(rows);
-            this.score += score + reward;
+            const currentScore = matrix.getScore(rows);
+            const currentReward = matrix.getReward(rows);
+            this.score += currentScore + currentReward;
             this.tetrisView.setScore(this.score);
-            this.tetrisView.setReward(reward);
+            this.tetrisView.setReward(currentReward);
         };
         this.setLevel = () => {
             const currentTime = new Date().getTime();

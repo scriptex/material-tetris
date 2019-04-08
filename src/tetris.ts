@@ -267,13 +267,13 @@ export default class Tetris {
 
 		matrix.removeRows(this.matrix, rows);
 
-		const score: number = matrix.getScore(rows);
-		const reward: number = matrix.getReward(rows);
+		const currentScore: number = matrix.getScore(rows);
+		const currentReward: number = matrix.getReward(rows);
 
-		this.score += score + reward;
+		this.score += currentScore + currentReward;
 
 		this.tetrisView.setScore(this.score);
-		this.tetrisView.setReward(reward);
+		this.tetrisView.setReward(currentReward);
 	};
 
 	private setLevel = (): void => {
