@@ -15,9 +15,9 @@
 		"pwa": "create-pwa --icon=\"./assets/icon.png\""
 	},
 	"author": "Atanas Atanasov <scriptex.bg@gmail.com> (https://atanas.info)",
-	"repository": "https://github.com/scriptex/tetris",
+	"repository": "https://github.com/scriptex/material-tetris",
 	"bugs": {
-		"url": "https://github.com/scriptex/tetris/issues",
+		"url": "https://github.com/scriptex/material-tetris/issues",
 		"email": "scriptex.bg@gmail.com"
 	},
 	"main": "dist/index.js",
