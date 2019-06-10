@@ -24,7 +24,10 @@ export default class Tetris {
             this.container.classList.remove('is--running');
         };
         this.init = (options = {}) => {
-            const config = Object.assign({}, defaults, options);
+            const config = {
+                ...defaults,
+                ...options
+            };
             this.interval = consts.DEFAULT_INTERVAL;
             this.tetrisView = new TetrisView({
                 width: config.maxWidth,
