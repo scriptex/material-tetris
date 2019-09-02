@@ -15,8 +15,8 @@ renovate.json
 webpack.config.js
 yarn.lock
 
-material-tetris.appcache
-material-tetris.sketch
+tetris.appcache
+tetris.sketch
 
 LICENSE
 README.md
