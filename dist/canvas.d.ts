@@ -1,3 +1,4 @@
+import { Row } from './matrix.js';
 import { Shape } from './shapes.js';
 export default class TetrisCanvas {
     private scene;
@@ -9,7 +10,7 @@ export default class TetrisCanvas {
     constructor(scene: HTMLCanvasElement, preview: HTMLCanvasElement);
     drawScene: () => void;
     drawPreview: () => void;
-    drawMatrix: (matrix: number[][]) => void;
+    drawMatrix: (matrix: Row[]) => void;
     drawShape: (shape: Shape) => void;
     drawPreviewShape: (shape: Shape) => void;
     private clearScene;
