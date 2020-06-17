@@ -1,6 +1,6 @@
 # Material Tetris
 
-[![Build Status](https://travis-ci.org/scriptex/material-tetris.svg?branch=master)](https://travis-ci.org/scriptex/material-tetris)
+[![Build Status](https://travis-ci.com/scriptex/material-tetris.svg?branch=master)](https://travis-ci.com/scriptex/material-tetris)
 
 A TypeScript implementation of the popular game.
 
