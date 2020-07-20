@@ -1,1 +1,1 @@
-export declare const $: (id: string) => HTMLCanvasElement | HTMLElement;
+export declare const $: (id: string) => HTMLElement | HTMLCanvasElement;
