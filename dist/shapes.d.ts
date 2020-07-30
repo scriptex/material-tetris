@@ -6,7 +6,7 @@ export interface Point {
 export interface IndexedList<T> {
     [key: string]: T;
 }
-export declare const canMove: (shape: Shape, matrix: number[][], action: string) => boolean;
+export declare const canMove: (shape: Shape, matrix: Row[], action: string) => boolean;
 export declare class Shape {
     x: number;
     y: number;
@@ -17,17 +17,17 @@ export declare class Shape {
     content: IndexedList<Point[]>;
     init: () => void;
     getContent: (state: number) => Point[];
-    rotate: (matrix: number[][]) => void;
+    rotate: (matrix: Row[]) => void;
     getColumnCount: () => number;
     getRowCount: () => number;
     getNextState: () => number;
-    canMoveDown: (matrix: number[][]) => boolean;
-    goDown: (matrix: number[][]) => void;
-    goBottom: (matrix: number[][]) => void;
-    goLeft: (matrix: number[][]) => void;
-    goRight: (matrix: number[][]) => void;
-    copyTo: (matrix: number[][]) => void;
-    getMatrix: (state?: number) => number[][];
+    canMoveDown: (matrix: Row[]) => boolean;
+    goDown: (matrix: Row[]) => void;
+    goBottom: (matrix: Row[]) => void;
+    goLeft: (matrix: Row[]) => void;
+    goRight: (matrix: Row[]) => void;
+    copyTo: (matrix: Row[]) => void;
+    getMatrix: (state?: number) => Row[];
     getRightPosition: () => number;
 }
 export declare class ShapeL extends Shape {
