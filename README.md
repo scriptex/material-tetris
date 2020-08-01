@@ -6,7 +6,7 @@ A TypeScript implementation of the popular game.
 
 ## Play
 
-[HERE](https://material-tetris.atanas.info/)
+[HERE](https://tetris.atanas.info/)
 
 ## License
 
