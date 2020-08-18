@@ -12,6 +12,7 @@ body {
 	display: flex;
 	flex-flow: row wrap;
 	align-items: center;
+	align-content: center;
 	justify-content: center;
 	padding: 0;
 	margin: 0;
@@ -167,6 +168,7 @@ button {
 footer {
 	color: #fff;
 	flex: 0 0 100%;
+	margin-top: 1rem;
 }
 
 social-links {

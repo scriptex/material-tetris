@@ -1,3 +1,6 @@
+// @ts-ignore
+import('https://unpkg.com/html-head-component');
+
 import { $ } from './utils.js';
 import Tetris from './tetris.js';
 
