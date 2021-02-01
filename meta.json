@@ -317,10 +317,5 @@
 		"rel": "apple-touch-startup-image",
 		"href": "launch-screens/launch-screen-1136x640.png",
 		"media": "(device-width: 1136px) and (device-height: 640px) and (orientation: landscape)"
-	},
-	{
-		"tag": "link",
-		"rel": "stylesheet",
-		"href": "style.css"
 	}
 ]
