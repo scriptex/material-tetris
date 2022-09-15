@@ -1,20 +1,11 @@
-import { DEFAULT_INTERVAL } from './consts.js';
+import { DEFAULT_INTERVAL } from './consts';
 
 export type Row = number[];
 
 export const init = (rows: number, cols: number): Row[] =>
 	[...Array(rows).keys()].map(() => [...Array(cols).keys()].map(() => 0));
 
-export const clear = (matrix: Row[]): Row[] =>
-	matrix.map((row: Row) => {
-		row.map((col: number) => {
-			col = 0;
-
-			return col;
-		});
-
-		return row;
-	});
+export const clear = (matrix: Row[]): Row[] => matrix.map((row: Row) => Array(row.length).fill(0));
 
 export const getFullRows = (matrix: Row[]): number[] =>
 	matrix
@@ -24,8 +15,10 @@ export const getFullRows = (matrix: Row[]): number[] =>
 			if (isFull) {
 				return i;
 			}
+
+			return -1;
 		})
-		.filter(Boolean);
+		.filter(item => item >= 0);
 
 export const removeRow = (matrix: Row[], index: number): void => {
 	const cols: number = matrix[0].length;

@@ -1,5 +1,5 @@
-import { ASIDE_WIDTH } from './consts.js';
-import { IndexedList } from './shapes.js';
+import { ASIDE_WIDTH } from './consts';
+import { IndexedList } from './shapes';
 
 export default class TetrisView {
 	private info: HTMLElement;
@@ -19,14 +19,14 @@ export default class TetrisView {
 	public preview: HTMLCanvasElement;
 	public btnRestart: HTMLElement;
 
-	constructor(size: IndexedList<number>, elements: IndexedList<HTMLElement | any>) {
+	constructor(size: IndexedList<number>, elements: IndexedList<HTMLElement | HTMLCanvasElement>) {
 		this.info = elements.info;
 		this.side = elements.side;
-		this.scene = elements.scene;
+		this.scene = elements.scene as HTMLCanvasElement;
 		this.score = elements.score;
 		this.level = elements.level;
 		this.reward = elements.reward;
-		this.preview = elements.preview;
+		this.preview = elements.preview as HTMLCanvasElement;
 		this.gameOver = elements.gameOver;
 		this.container = elements.container;
 		this.btnRestart = elements.btnRestart;

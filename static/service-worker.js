@@ -91,7 +91,9 @@ self.addEventListener('fetch', event => {
 					})
 				);
 
-				return response;
+				return {
+					...response
+				};
 			});
 		})
 	);

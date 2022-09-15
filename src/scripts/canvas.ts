@@ -1,6 +1,6 @@
-import { Row } from './matrix.js';
-import { Point, Shape } from './shapes.js';
-import * as constants from './consts.js';
+import { Row } from './matrix';
+import { Point, Shape } from './shapes';
+import * as constants from './consts';
 
 export default class TetrisCanvas {
 	private scene: HTMLCanvasElement;
@@ -13,8 +13,8 @@ export default class TetrisCanvas {
 	constructor(scene: HTMLCanvasElement, preview: HTMLCanvasElement) {
 		this.scene = scene;
 		this.preview = preview;
-		this.sceneContext = scene.getContext('2d');
-		this.previewContext = preview.getContext('2d');
+		this.sceneContext = scene.getContext('2d') as CanvasRenderingContext2D;
+		this.previewContext = preview.getContext('2d') as CanvasRenderingContext2D;
 		this.gridSize = scene.width / constants.COLUMN_COUNT;
 		this.previewGridSize = preview.width / constants.PREVIEW_COUNT;
 
@@ -54,7 +54,12 @@ export default class TetrisCanvas {
 					continue;
 				}
 
-				this.drawPoint(this.sceneContext, row[j] as any, j * this.gridSize, i * this.gridSize, this.gridSize);
+				this.drawPoint(this.sceneContext, {
+					x: j * this.gridSize,
+					y: i * this.gridSize,
+					size: this.gridSize,
+					color: row[j] as unknown as string
+				});
 			}
 		}
 	};
@@ -78,7 +83,12 @@ export default class TetrisCanvas {
 				const x: number = size * (shape.x + j);
 				const y: number = size * (shape.y + i);
 
-				this.drawPoint(this.sceneContext, shape.color, x, y, size);
+				this.drawPoint(this.sceneContext, {
+					x,
+					y,
+					size,
+					color: shape.color
+				});
 			}
 		}
 	};
@@ -106,7 +116,12 @@ export default class TetrisCanvas {
 				const x: number = startX + size * j;
 				const y: number = startY + size * i;
 
-				this.drawPoint(this.previewContext, shape.color, x, y, size);
+				this.drawPoint(this.previewContext, {
+					x,
+					y,
+					size,
+					color: shape.color
+				});
 			}
 		}
 	};
@@ -140,7 +155,7 @@ export default class TetrisCanvas {
 		color1: string,
 		color2: string
 	): void => {
-		const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+		const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 		const width: number = canvas.width;
 		const height: number = canvas.height;
 
@@ -167,7 +182,12 @@ export default class TetrisCanvas {
 		}
 	};
 
-	private drawPoint = (ctx: CanvasRenderingContext2D, color: string, x: number, y: number, size: number): void => {
+	private drawPoint = (
+		ctx: CanvasRenderingContext2D,
+		options: { color: string; x: number; y: number; size: number }
+	): void => {
+		const { x, y, size, color } = options;
+
 		if (y < 0) {
 			return;
 		}
