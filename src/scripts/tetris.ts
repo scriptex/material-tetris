@@ -49,12 +49,16 @@ export default class Tetris {
 	constructor(id: string) {
 		this.container = $(id) as HTMLElement;
 		this.init();
+
+		this.refresh = this.refresh.bind(this);
+		this.restart = this.restart.bind(this);
+		this.keyboardHandler = this.keyboardHandler.bind(this);
 	}
 
 	public start = (): void => {
 		this.running = true;
 
-		window.requestAnimationFrame(this.refresh.bind(this));
+		window.requestAnimationFrame(this.refresh);
 
 		this.container.classList.add('is--running');
 	};
@@ -139,8 +143,8 @@ export default class Tetris {
 		};
 
 		Object.keys(touchEventsMap).forEach((eventName: string): void => {
-			scene.addEventListener(eventName, (event: CustomEvent): void => {
-				this.respondToGesture(touchEventsMap[event.detail.eventName]);
+			scene.addEventListener(eventName, event => {
+				this.respondToGesture(touchEventsMap[(event as unknown as CustomEvent).detail.eventName]);
 			});
 		});
 	};
@@ -196,8 +200,8 @@ export default class Tetris {
 
 	private addEventListeners = (): void => {
 		this.touchHandler();
-		window.addEventListener('keydown', this.keyboardHandler.bind(this), false);
-		btnRestart.addEventListener('click', this.restart.bind(this), false);
+		window.addEventListener('keydown', this.keyboardHandler, false);
+		btnRestart.addEventListener('click', this.restart, false);
 	};
 
 	private drawShape = (): void => {
@@ -233,7 +237,7 @@ export default class Tetris {
 		}
 
 		if (!this.isOver) {
-			window.requestAnimationFrame(this.refresh.bind(this));
+			window.requestAnimationFrame(this.refresh);
 		}
 	};
 
