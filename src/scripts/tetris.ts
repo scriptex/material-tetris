@@ -49,10 +49,6 @@ export default class Tetris {
 	constructor(id: string) {
 		this.container = $(id) as HTMLElement;
 		this.init();
-
-		this.refresh = this.refresh.bind(this);
-		this.restart = this.restart.bind(this);
-		this.keyboardHandler = this.keyboardHandler.bind(this);
 	}
 
 	public start = (): void => {
@@ -134,12 +130,12 @@ export default class Tetris {
 			return;
 		}
 
-		const touchEventsMap: shapes.IndexedList<number> = {
-			tap: 32,
-			swipeleft: 37,
-			swipeup: 38,
-			swiperight: 39,
-			swipedown: 40
+		const touchEventsMap: shapes.IndexedList<string> = {
+			tap: 'Space',
+			swipeleft: 'ArrowLeft',
+			swipeup: 'ArrowUp',
+			swiperight: 'ArrowRight',
+			swipedown: 'ArrowDown'
 		};
 
 		Object.keys(touchEventsMap).forEach((eventName: string): void => {
@@ -154,38 +150,38 @@ export default class Tetris {
 			return;
 		}
 
-		this.respondToGesture(e.keyCode);
+		this.respondToGesture(e.code);
 	};
 
-	private respondToGesture = (code: number): void => {
+	private respondToGesture = (code: string): void => {
 		const area: matrix.Row[] = this.matrix;
 
 		switch (code) {
-			case 32:
+			case 'Space':
 				this.shape?.goBottom(area);
 				this.update();
 
 				break;
 
-			case 37:
+			case 'ArrowLeft':
 				this.shape?.goLeft(area);
 				this.draw();
 
 				break;
 
-			case 38:
+			case 'ArrowUp':
 				this.shape?.rotate(area);
 				this.draw();
 
 				break;
 
-			case 39:
+			case 'ArrowRight':
 				this.shape?.goRight(area);
 				this.draw();
 
 				break;
 
-			case 40:
+			case 'ArrowDown':
 				this.shape?.goDown(area);
 				this.draw();
 
