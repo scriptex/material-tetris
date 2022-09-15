@@ -1,6 +1,6 @@
-import { Row } from './matrix.js';
-import { Point, Shape } from './shapes.js';
-import * as constants from './consts.js';
+import { Row } from './matrix';
+import { Point, Shape } from './shapes';
+import * as constants from './consts';
 
 export default class TetrisCanvas {
 	private scene: HTMLCanvasElement;
@@ -13,8 +13,8 @@ export default class TetrisCanvas {
 	constructor(scene: HTMLCanvasElement, preview: HTMLCanvasElement) {
 		this.scene = scene;
 		this.preview = preview;
-		this.sceneContext = scene.getContext('2d');
-		this.previewContext = preview.getContext('2d');
+		this.sceneContext = scene.getContext('2d') as CanvasRenderingContext2D;
+		this.previewContext = preview.getContext('2d') as CanvasRenderingContext2D;
 		this.gridSize = scene.width / constants.COLUMN_COUNT;
 		this.previewGridSize = preview.width / constants.PREVIEW_COUNT;
 
@@ -140,7 +140,7 @@ export default class TetrisCanvas {
 		color1: string,
 		color2: string
 	): void => {
-		const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+		const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 		const width: number = canvas.width;
 		const height: number = canvas.height;
 

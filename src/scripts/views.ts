@@ -1,5 +1,5 @@
-import { ASIDE_WIDTH } from './consts.js';
-import { IndexedList } from './shapes.js';
+import { ASIDE_WIDTH } from './consts';
+import { IndexedList } from './shapes';
 
 export default class TetrisView {
 	private info: HTMLElement;

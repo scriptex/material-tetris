@@ -1,5 +1,5 @@
-import { Row } from './matrix.js';
-import { COLORS, COLUMN_COUNT } from './consts.js';
+import { Row } from './matrix';
+import { COLORS, COLUMN_COUNT } from './consts';
 
 export interface Point {
 	x: number;
@@ -43,6 +43,8 @@ export const canMove = (shape: Shape, matrix: Row[], action: string): boolean =>
 		if (action === 'rotate') {
 			return y < rows && !matrix[y][x];
 		}
+
+		return false;
 	};
 
 	// prettier-ignore
@@ -58,13 +60,13 @@ export const canMove = (shape: Shape, matrix: Row[], action: string): boolean =>
 };
 
 export class Shape {
-	public x: number;
-	public y: number;
-	public flag: string;
-	public color: string;
-	public state: number;
-	public states: Row[][];
-	public content: IndexedList<Point[]>;
+	public x: number = 0;
+	public y: number = 0;
+	public flag: string = '';
+	public color: string = '';
+	public state: number = 0;
+	public states: Row[][] = [];
+	public content: IndexedList<Point[]> = {};
 
 	public init = (): void => {
 		this.y = 0;
@@ -203,10 +205,24 @@ export class ShapeL extends Shape {
 		this.y = -3;
 		this.flag = 'L';
 		this.states = [
-			[[1, 0], [1, 0], [1, 1]],
-			[[0, 0, 1], [1, 1, 1]],
-			[[1, 1], [0, 1], [0, 1]],
-			[[1, 1, 1], [1, 0, 0]]
+			[
+				[1, 0],
+				[1, 0],
+				[1, 1]
+			],
+			[
+				[0, 0, 1],
+				[1, 1, 1]
+			],
+			[
+				[1, 1],
+				[0, 1],
+				[0, 1]
+			],
+			[
+				[1, 1, 1],
+				[1, 0, 0]
+			]
 		];
 	}
 }
@@ -219,10 +235,24 @@ export class ShapeLR extends Shape {
 		this.y = -3;
 		this.flag = 'LR';
 		this.states = [
-			[[0, 1], [0, 1], [1, 1]],
-			[[1, 1, 1], [0, 0, 1]],
-			[[1, 1], [1, 0], [1, 0]],
-			[[1, 0, 0], [1, 1, 1]]
+			[
+				[0, 1],
+				[0, 1],
+				[1, 1]
+			],
+			[
+				[1, 1, 1],
+				[0, 0, 1]
+			],
+			[
+				[1, 1],
+				[1, 0],
+				[1, 0]
+			],
+			[
+				[1, 0, 0],
+				[1, 1, 1]
+			]
 		];
 	}
 }
@@ -234,7 +264,12 @@ export class ShapeO extends Shape {
 		this.x = 4;
 		this.y = -2;
 		this.flag = 'O';
-		this.states = [[[1, 1], [1, 1]]];
+		this.states = [
+			[
+				[1, 1],
+				[1, 1]
+			]
+		];
 	}
 }
 
@@ -257,10 +292,24 @@ export class ShapeT extends Shape {
 		this.y = -2;
 		this.flag = 'T';
 		this.states = [
-			[[1, 1, 1], [0, 1, 0]],
-			[[1, 0], [1, 1], [1, 0]],
-			[[0, 1, 0], [1, 1, 1]],
-			[[0, 1], [1, 1], [0, 1]]
+			[
+				[1, 1, 1],
+				[0, 1, 0]
+			],
+			[
+				[1, 0],
+				[1, 1],
+				[1, 0]
+			],
+			[
+				[0, 1, 0],
+				[1, 1, 1]
+			],
+			[
+				[0, 1],
+				[1, 1],
+				[0, 1]
+			]
 		];
 	}
 }
@@ -272,7 +321,17 @@ class ShapeZ extends Shape {
 		this.x = 4;
 		this.y = -2;
 		this.flag = 'Z';
-		this.states = [[[1, 1, 0], [0, 1, 1]], [[0, 1], [1, 1], [1, 0]]];
+		this.states = [
+			[
+				[1, 1, 0],
+				[0, 1, 1]
+			],
+			[
+				[0, 1],
+				[1, 1],
+				[1, 0]
+			]
+		];
 	}
 }
 
@@ -283,7 +342,17 @@ class ShapeZR extends Shape {
 		this.x = 4;
 		this.y = -2;
 		this.flag = 'ZR';
-		this.states = [[[0, 1, 1], [1, 1, 0]], [[1, 0], [1, 1], [0, 1]]];
+		this.states = [
+			[
+				[0, 1, 1],
+				[1, 1, 0]
+			],
+			[
+				[1, 0],
+				[1, 1],
+				[0, 1]
+			]
+		];
 	}
 }
 
@@ -316,7 +385,9 @@ export const randomShape = () => {
 			break;
 	}
 
+	// @ts-ignore
 	shape.init();
 
+	// @ts-ignore
 	return shape;
 };

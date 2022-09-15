@@ -1,4 +1,4 @@
-import { DEFAULT_INTERVAL } from './consts.js';
+import { DEFAULT_INTERVAL } from './consts';
 
 export type Row = number[];
 
@@ -24,8 +24,10 @@ export const getFullRows = (matrix: Row[]): number[] =>
 			if (isFull) {
 				return i;
 			}
+
+			return -1;
 		})
-		.filter(Boolean);
+		.filter(item => item >= 0);
 
 export const removeRow = (matrix: Row[], index: number): void => {
 	const cols: number = matrix[0].length;
