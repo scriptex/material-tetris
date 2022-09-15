@@ -54,7 +54,13 @@ export default class TetrisCanvas {
 					continue;
 				}
 
-				this.drawPoint(this.sceneContext, row[j] as any, j * this.gridSize, i * this.gridSize, this.gridSize);
+				this.drawPoint(
+					this.sceneContext,
+					row[j] as unknown as string,
+					j * this.gridSize,
+					i * this.gridSize,
+					this.gridSize
+				);
 			}
 		}
 	};

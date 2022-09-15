@@ -1,13 +1,13 @@
 import { $ } from './utils';
 
-export const scene: any = $('scene');
-export const side: HTMLElement = $('side')!;
-export const info: HTMLElement = $('info')!;
-export const preview: any = $('preview');
-export const level: HTMLElement = $('level')!;
-export const score: HTMLElement = $('score')!;
-export const rewardInfo: HTMLElement = $('rewardInfo')!;
-export const reward: HTMLElement = $('reward')!;
-export const gameOver: HTMLElement = $('gameOver')!;
-export const btnRestart: HTMLElement = $('restart')!;
-export const finalScore: HTMLElement = $('finalScore')!;
+export const scene = $('scene') as HTMLCanvasElement;
+export const side = $('side') as HTMLElement;
+export const info = $('info') as HTMLElement;
+export const preview = $('preview') as HTMLCanvasElement;
+export const level = $('level') as HTMLElement;
+export const score = $('score') as HTMLElement;
+export const rewardInfo = $('rewardInfo') as HTMLElement;
+export const reward = $('reward') as HTMLElement;
+export const gameOver = $('gameOver') as HTMLElement;
+export const btnRestart = $('restart') as HTMLElement;
+export const finalScore = $('finalScore') as HTMLElement;

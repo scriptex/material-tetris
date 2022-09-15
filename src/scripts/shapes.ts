@@ -176,7 +176,7 @@ export class Shape {
 				const y: number = this.y + i;
 
 				if (x >= 0 && x < matrix[0].length && y >= 0 && y < matrix.length) {
-					matrix[y][x] = this.color as any;
+					matrix[y][x] = this.color as unknown as number;
 				}
 			}
 		}
@@ -359,7 +359,7 @@ class ShapeZR extends Shape {
 export const randomShape = () => {
 	const result = Math.floor(Math.random() * 7);
 
-	let shape: Shape;
+	let shape!: Shape;
 
 	switch (result) {
 		case 0:
@@ -385,9 +385,7 @@ export const randomShape = () => {
 			break;
 	}
 
-	// @ts-ignore
 	shape.init();
 
-	// @ts-ignore
 	return shape;
 };
