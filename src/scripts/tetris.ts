@@ -27,6 +27,14 @@ export const defaults: shapes.IndexedList<number> = {
 	maxWidth: 600
 };
 
+const touchEventsMap: shapes.IndexedList<string> = {
+	tap: 'tap',
+	swipeleft: 'swipeleft',
+	swipeup: 'swipeup',
+	swiperight: 'swiperight',
+	swipedown: 'swipedown'
+};
+
 export default class Tetris {
 	public touchSwipeInstance: TouchSweep | null = null;
 
@@ -124,23 +132,11 @@ export default class Tetris {
 	};
 
 	private touchHandler = (): void => {
-		this.touchSwipeInstance = new TouchSweep(scene);
-
-		if (!this.running) {
-			return;
-		}
-
-		const touchEventsMap: shapes.IndexedList<string> = {
-			tap: 'Space',
-			swipeleft: 'ArrowLeft',
-			swipeup: 'ArrowUp',
-			swiperight: 'ArrowRight',
-			swipedown: 'ArrowDown'
-		};
+		this.touchSwipeInstance = new TouchSweep(scene, {}, 20);
 
 		Object.keys(touchEventsMap).forEach((eventName: string): void => {
 			scene.addEventListener(eventName, event => {
-				this.respondToGesture(touchEventsMap[(event as unknown as CustomEvent).detail.eventName]);
+				this.respondToGesture(touchEventsMap[event.type]);
 			});
 		});
 	};
@@ -157,31 +153,25 @@ export default class Tetris {
 		const area: matrix.Row[] = this.matrix;
 
 		switch (code) {
-			case 'Space':
-				this.shape?.goBottom(area);
-				this.update();
-
-				break;
-
-			case 'ArrowLeft':
+			case touchEventsMap.swipeleft:
 				this.shape?.goLeft(area);
 				this.draw();
 
 				break;
 
-			case 'ArrowUp':
+			case touchEventsMap.swipeup:
 				this.shape?.rotate(area);
 				this.draw();
 
 				break;
 
-			case 'ArrowRight':
+			case touchEventsMap.swiperight:
 				this.shape?.goRight(area);
 				this.draw();
 
 				break;
 
-			case 'ArrowDown':
+			case touchEventsMap.swipedown:
 				this.shape?.goDown(area);
 				this.draw();
 
